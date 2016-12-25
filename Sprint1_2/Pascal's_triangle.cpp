@@ -37,15 +37,3 @@ void pascals_triangle(int height)
         cout << endl;
     }
 }
-/*
-for(int i=0;i<h;i++)
-{
-    for(int j=1;j<h-i;j++)
-        cout<<'-';
-        for(int j=h-i;j<=h+i;j++)
-        cout<<'*';
-        for(int j=h+i+1;j<h*2;j++)
-        cout<<'-';
-        cout<<endl;
-        }
-*/
