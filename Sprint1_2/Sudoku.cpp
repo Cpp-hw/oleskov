@@ -26,6 +26,7 @@
             }
         }
         
+        cout << "The Sudoku board:" << endl;
         Print(Board);
         
         bool is_valid = false;
