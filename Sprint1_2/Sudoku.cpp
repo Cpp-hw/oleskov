@@ -61,7 +61,7 @@
             for(int row = 0; row < size; row++)
             {
                 temp.insert(board[row][col]);
-                if(row == 9 && temp.size() != 9)
+                if(row == 8 && temp.size() != 9)
                     return false;
             }
             temp.clear();
