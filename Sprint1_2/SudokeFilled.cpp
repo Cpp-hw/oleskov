@@ -17,19 +17,16 @@
     int main()
     {
         int Board[size][size];
+        srand((int)time(NULL));
         for (int row = 0; row < size; row++)
         {
             for(int col = 0; col < size; col++)
             {
-                Board[row][col] = 0;
+                Board[row][col] = rand() % 9 + 1;
             }
         }
-        srand((int)time(NULL));
-        for (int i = 10; i >+ 0; i--)
-        {
-            Board[rand() % 9][rand() % 9] = rand() % 9;
-        }
         
+        cout << "The Sudoku board:" << endl;
         Print(Board);
         
         bool is_valid = false;
@@ -42,22 +39,14 @@
     
     bool ValidRow(int board[][size])
     {
-        multiset <int> temp;
+        set <int> temp;
         for(int row = 0; row < size; row++)
         {
             for(int col = 0; col < size; col++)
-                temp.insert(board[row][col]);
-            
-            int temp_value = 0;
-            for(multiset<int>::reverse_iterator it = temp.rbegin(), itEnd = temp.rend(); it != itEnd; ++it)
             {
-                if (*it != 0)
-                {
-                    if (*it != temp_value)
-                        temp_value = *it;
-                    else
-                        return false;
-                }
+                temp.insert(board[row][col]);
+                if(col == 8 && temp.size() != 9)
+                    return false;
             }
             temp.clear();
         }
@@ -67,76 +56,50 @@
     
     bool ValidCol(int board[][size])
     {
-        multiset <int> temp;
+        set <int> temp;
         for(int col = 0; col < size; col++)
         {
             for(int row = 0; row < size; row++)
-                temp.insert(board[row][col]);
-        
-            int temp_value = 0;
-            for(multiset<int>::reverse_iterator it = temp.rbegin(), itEnd = temp.rend(); it != itEnd; ++it)
             {
-                if (*it != 0)
-                {
-                    if (*it != temp_value)
-                        temp_value = *it;
-                    else
-                        return false;
-                }
+                temp.insert(board[row][col]);
+                if(row == 8 && temp.size() != 9)
+                    return false;
             }
-        temp.clear();
+            temp.clear();
         }
-    
-    return true;
+        
+        return true;
     }
     
     bool ValidLeftUpRightDownDiagonal(int board[][size])
     {
-        multiset <int> temp;
+        set <int> temp;
+        
         for(int i = 0; i < size; i++)
             temp.insert(board[i][i]);
-            
-        int temp_value = 0;
-        for(multiset<int>::reverse_iterator it = temp.rbegin(), itEnd = temp.rend(); it != itEnd; ++it)
-        {
-            if (*it != 0)
-            {
-                if (*it != temp_value)
-                    temp_value = *it;
-                else
-                    return false;
-            }
-        }
-        
-        return true;
+        if(temp.size() != 9)
+            return false;
+        else
+            return true;
     }
     
     bool ValidRightUpLeftDownDiagonal(int board[][size])
     {
-        multiset <int> temp;
+        set <int> temp;
+        
         for(int i = size - 1; i >=0; i--)
             temp.insert(board[i][i]);
-        
-        int temp_value = 0;
-        for(multiset<int>::reverse_iterator it = temp.rbegin(), itEnd = temp.rend(); it != itEnd; ++it)
-        {
-            if (*it != 0)
-            {
-                if (*it != temp_value)
-                    temp_value = *it;
-                else
-                    return false;
-            }
-        }
-        
-        return true;
+        if(temp.size() != 9)
+            return false;
+        else
+            return true;
     }
     
     bool ValidCell(int board[][size])
     {
         int cell_row, cell_col;
         int iteration = 0;
-        multiset <int> temp;
+        set <int> temp;
         for(int row = 0; row < size; row++)
         {
             for(int col = 0; col < size; col++)
@@ -155,27 +118,21 @@
                 else
                     cell_col = 6;
                 
-                for(int i = cell_row; i < cell_row + 3; i++)
+                for(int i = cell_row; i < row; i++)
                 {
-                    for(int j = cell_col; j < cell_col + 3; j++)
+                    for(int j = cell_col; j < col; j++)
                     {
-                        temp.insert(board[i][j]);
+                        temp.insert(board[row][col]);
                         iteration++;
                         if(iteration == 9)
                         {
-                            int temp_value = 0;
-                            for(multiset<int>::reverse_iterator it = temp.rbegin(), itEnd = temp.rend(); it != itEnd; ++it)
+                            if (temp.size() != 9)
                             {
-                                if (*it != 0)
-                                {
-                                    if (*it != temp_value)
-                                        temp_value = *it;
-                                    else
-                                        return false;
-                                }
+                                iteration = 0;
+                                return false;
                             }
-                            temp.clear();
-                            iteration = 0;
+                            else
+                                temp.clear();
                         }
                     }
                 }
@@ -196,10 +153,7 @@
                 if (col == 0 || col % 3 == 0)
                     cout << " | ";
                 
-                if (board[row][col] == 0)
-                    cout << " ";
-                else
-                    cout << board[row][col];
+                cout << board[row][col];
                 if (col == size - 1)
                     cout << " | ";
             }
